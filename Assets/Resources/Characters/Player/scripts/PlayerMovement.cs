@@ -9,20 +9,35 @@ public class PlayerMovement : MonoBehaviour {
     //enum AnimState { Idle = 0, Walking = 1, Attacking = 2, Hurt = 3 }
     
     
-    [SerializeField] float speed;
+    float speed;
     
-    Animator animator;
+    //Animator animator;
     Vector2 movement;
-    int facingDirection = 0;
+    /*int facingDirection = 0;
     int state = 0;
-    int previousState = 0;
+    int previousState = 0;*/
     Rigidbody2D rigidBody;
     PlayerInputs inputs;
+    
+    public Vector2 CurrentMovement => movement;
+    
+    //private AttackHitboxController attackHitboxController;
 
+    public void setSpd(int spd)
+    {
+        speed = spd;
+    }
+
+    public void StopMovement()
+    {
+        movement = Vector2.zero;
+    }
+    
     private void Awake() {
         rigidBody = GetComponent<Rigidbody2D>();
         inputs = new PlayerInputs();
-        animator = GetComponent<Animator>();
+        //animator = GetComponent<Animator>();
+        //attackHitboxController = GetComponentInChildren<AttackHitboxController>();
     }
 
     private void OnEnable() {
@@ -31,38 +46,38 @@ public class PlayerMovement : MonoBehaviour {
         inputs.Gameplay.Movement.performed += OnMovement;
         inputs.Gameplay.Movement.canceled += OnMovement;
         
-        inputs.Gameplay.Hurt.performed += OnHurt;
-        inputs.Gameplay.Hurt.canceled += OnHurt;
+        //inputs.Gameplay.Hurt.performed += OnHurt;
+        //inputs.Gameplay.Hurt.canceled += OnHurt;
         
-        inputs.Gameplay.Attack.performed += OnAttack;
-        inputs.Gameplay.Attack.canceled += OnAttack;
+        //inputs.Gameplay.Attack.performed += OnAttack;
+        //inputs.Gameplay.Attack.canceled += OnAttack;
     }
 
     private void OnDisable() {
         inputs.Gameplay.Movement.performed -= OnMovement;
         inputs.Gameplay.Movement.canceled -= OnMovement;
         
-        inputs.Gameplay.Hurt.performed -= OnHurt;
-        inputs.Gameplay.Hurt.canceled -= OnHurt;
+        //inputs.Gameplay.Hurt.performed -= OnHurt;
+        //inputs.Gameplay.Hurt.canceled -= OnHurt;
         
-        inputs.Gameplay.Attack.performed -= OnAttack;
-        inputs.Gameplay.Attack.canceled -= OnAttack;
+        //inputs.Gameplay.Attack.performed -= OnAttack;
+        //inputs.Gameplay.Attack.canceled -= OnAttack;
     }
 
     private void OnMovement(InputAction.CallbackContext context) {
-        if (state < 2) {
+        //if (state < 2) {
             movement = context.ReadValue<Vector2>();
                     
-            if (movement != Vector2.zero) {
+            /*if (movement != Vector2.zero) {
                 facingDirection = GetFacingDirection(movement.normalized);
                 state = 1;
             } else {
                 state = 0;
-            }
-        }
+            }*/
+        //}
     }
     
-    private int GetFacingDirection(Vector2 direction) {
+    /*private int GetFacingDirection(Vector2 direction) {
         direction = new Vector2(Mathf.Round(direction.x), Mathf.Round(direction.y));
 
         return direction switch {
@@ -77,11 +92,12 @@ public class PlayerMovement : MonoBehaviour {
     private void OnHurt(InputAction.CallbackContext context) {
         if (state < 3) {
             state = 3;
+            movement = Vector2.zero;
         }
     }
     
     public void OnHurtEnd() {
-        state = 0;
+        RefreshMovement();
         animator.SetFloat("State", state);
     }
     
@@ -89,15 +105,39 @@ public class PlayerMovement : MonoBehaviour {
         if (state < 2) {
             previousState = state; 
             state = 2;
+            movement = Vector2.zero;
         }
+    }
+
+    private void CreateAttackHitbox()
+    {
+        if (attackHitboxController != null)
+            attackHitboxController.SetHitboxFrame(facingDirection);
+    }
+
+    private void DisableHitboxes()
+    {
+        if (attackHitboxController != null)
+            attackHitboxController.DisableHitboxes();
     }
     
     public void OnAttackEnd() {
-        state = previousState;
+        RefreshMovement();
         animator.SetFloat("State", previousState);
+    }*/
+    
+    public void RefreshMovement() {
+        movement = inputs.Gameplay.Movement.ReadValue<Vector2>();
+
+        /*if (movement != Vector2.zero) {
+            facingDirection = GetFacingDirection(movement.normalized);
+            state = 1;
+        } else {
+            state = 0;
+        }*/
     }
 
-    private void LaunchAnimation() {
+    /*private void LaunchAnimation() {
         animator.SetFloat("Direction",facingDirection);
         animator.SetFloat("State",state);
     }
@@ -105,9 +145,11 @@ public class PlayerMovement : MonoBehaviour {
     private void Update() {
         LaunchAnimation();
         //Debug.Log($"estado: {animator.GetFloat("State")}, Dirección de mirada: {animator.GetFloat("Direction")}");
-    }
+    }*/
 
     private void FixedUpdate() {
-        rigidBody.linearVelocity = movement * speed;
+        if (movement != Vector2.zero) {
+            rigidBody.MovePosition(rigidBody.position + movement * speed * Time.fixedDeltaTime);
+        }
     }
 }
