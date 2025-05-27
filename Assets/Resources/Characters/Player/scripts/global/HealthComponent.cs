@@ -4,11 +4,15 @@ public class HealthComponent : MonoBehaviour
 {
     private int curHP;
     private StatsComponent stats;
+    //public HealthBar healthBar;
 
     public void Initialize(StatsComponent stats)
     {
         this.stats = stats;
         curHP = stats.maxHp;
+        
+        /*healthBar.SetMaxHealth(stats.maxHp);
+        healthBar.SetHealth(GetHp());*/
     }
 
     public void TakeDamage(int amount, string type)
@@ -23,6 +27,7 @@ public class HealthComponent : MonoBehaviour
         }
         
         curHP -= damage;
+        //healthBar.SetHealth(GetHp());
         Debug.Log($"{gameObject.name} recibe {damage} daño. HP: {curHP}");
 
         if (curHP <= 0)
@@ -40,5 +45,10 @@ public class HealthComponent : MonoBehaviour
     public void Heal(int amount)
     {
         curHP = Mathf.Min(curHP + amount, stats.maxHp);
+    }
+
+    public int GetHp()
+    {
+        return curHP;
     }
 }

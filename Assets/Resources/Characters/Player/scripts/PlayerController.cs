@@ -7,8 +7,9 @@ public class PlayerController : MonoBehaviour
     private AnimationCompController animationController;
     private PlayerInputs inputs;
     private CombatController combat;
+    public HealthBar healthBar;
     //private PlayerMovement movement;
-
+    
     private void Awake()
     {
         combat = GetComponent<CombatController>();
@@ -16,13 +17,21 @@ public class PlayerController : MonoBehaviour
         movementController = GetComponent<PlayerMovement>();
         animationController = GetComponent<AnimationCompController>();
         inputs = new PlayerInputs();
-        movementController.setSpd(combat.stats.spd);
-        
+
         var hitbox = GetComponentInChildren<AttackHitboxController>();
         if (hitbox != null)
         {
             hitbox.OnHitboxTriggerEnter += HandleHitboxTrigger;
         }
+    }
+
+    private void Start()
+    {
+        movementController.setSpd(combat.getSpd());
+        healthBar.SetMaxHealth(combat.stats.maxHp);
+        Debug.Log(healthBar.slider.maxValue + " max");
+        healthBar.SetHealth(combat.health.GetHp());
+        Debug.Log(healthBar.slider.value + " act");
     }
     
     private void HandleHitboxTrigger(Collider2D other)
@@ -86,7 +95,8 @@ public class PlayerController : MonoBehaviour
     }
     
     public void OnHurtEnd() {
-        
+        combat.ReceiveDamage(6,"Physical");
+        healthBar.SetHealth(combat.health.GetHp());
         animationController.OnHurtEndInside(movementController.CurrentMovement);
         movementController.RefreshMovement();
     }
