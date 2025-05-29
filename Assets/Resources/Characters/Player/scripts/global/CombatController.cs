@@ -6,14 +6,23 @@ public class CombatController : MonoBehaviour
     public StatsComponent stats;
     public HealthComponent health;
 
-    public int patata = 1;
+    public HealthBar healthBar;
     
     private void Awake()
     {
         stats = GetComponent<StatsComponent>();
         health = GetComponent<HealthComponent>();
         
-        //stats.Initialize(10,1,2,4,5,5,4);
+        healthBar = GameObject.Find("HealthBar").GetComponent<HealthBar>();
+    }
+
+    private void Start()
+    {
+        if (gameObject.CompareTag("Player"))
+        {
+            healthBar.SetMaxHealth(stats.maxHp);
+            healthBar.SetHealth(health.GetHp());
+        }
     }
 
     private void OnEnable()
@@ -24,11 +33,19 @@ public class CombatController : MonoBehaviour
     public void ReceiveDamage(int amount, string type)
     {
         health.TakeDamage(amount, type);
+    
+        if (CompareTag("Player"))
+            healthBar.SetHealth(health.GetHp());
     }
 
     public void ReceiveHeal(int amount)
     {
         health.Heal(amount);
+    }
+
+    public void SetHp(int hp)
+    {
+        health.SetHp(hp);
     }
 
     public int getStr()

@@ -24,17 +24,6 @@ public class AnimationCompController : MonoBehaviour
         LaunchAnimation();
     }
     
-    /*public void RefreshMovement() {
-        movement = inputs.Gameplay.Movement.ReadValue<Vector2>();
-
-        /*if (movement != Vector2.zero) {
-            facingDirection = GetFacingDirection(movement.normalized);
-            state = 1;
-        } else {
-            state = 0;
-        }
-    }*/
-    
     public void OnAttack() {
         if (state < 2) {
             state = 2;

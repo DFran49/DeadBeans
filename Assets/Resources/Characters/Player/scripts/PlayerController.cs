@@ -7,15 +7,15 @@ public class PlayerController : MonoBehaviour
     private AnimationCompController animationController;
     private PlayerInputs inputs;
     private CombatController combat;
-    public HealthBar healthBar;
-    //private PlayerMovement movement;
-    
+
+    private CryptosComponent money;
     private void Awake()
     {
         combat = GetComponent<CombatController>();
         
         movementController = GetComponent<PlayerMovement>();
         animationController = GetComponent<AnimationCompController>();
+        money = GetComponent<CryptosComponent>();
         inputs = new PlayerInputs();
 
         var hitbox = GetComponentInChildren<AttackHitboxController>();
@@ -28,25 +28,18 @@ public class PlayerController : MonoBehaviour
     private void Start()
     {
         movementController.setSpd(combat.getSpd());
-        healthBar.SetMaxHealth(combat.stats.maxHp);
-        Debug.Log(healthBar.slider.maxValue + " max");
-        healthBar.SetHealth(combat.health.GetHp());
-        Debug.Log(healthBar.slider.value + " act");
     }
     
     private void HandleHitboxTrigger(Collider2D other)
     {
-        Debug.Log("El jugador fue golpeado por: " + other.name + " e hizo " + combat.getStr() + " puntos de daño");
-        // Aquí puedes llamar a métodos del jugador, reducir vida, etc.
-        //Debug.Log("Hitbox triggered with: " + other.name);
-    
+        Debug.Log("El jugador golpeó a: " + other.name + " e hizo " + combat.getStr() + " puntos de daño");
         
         if (other.CompareTag("Enemy"))
         {
             var enemyHealth = other.GetComponent<HealthComponent>();
             if (enemyHealth != null)
             {
-                enemyHealth.TakeDamage(combat.getStr(), "Physical"); // o el daño que corresponda
+                enemyHealth.TakeDamage(combat.getStr(), "Physical");
             }
         }
     }
@@ -88,6 +81,11 @@ public class PlayerController : MonoBehaviour
         animationController.OnHurt();
     }
     
+    public void OnHurt() {
+        movementController.StopMovement();
+        animationController.OnHurt();
+    }
+    
     public void OnAttackEnd() {
         
         animationController.OnAttackEndInside();
@@ -95,9 +93,30 @@ public class PlayerController : MonoBehaviour
     }
     
     public void OnHurtEnd() {
-        combat.ReceiveDamage(6,"Physical");
-        healthBar.SetHealth(combat.health.GetHp());
         animationController.OnHurtEndInside(movementController.CurrentMovement);
         movementController.RefreshMovement();
+    }
+
+    public void ApplyMoney(int amount)
+    {
+        if (amount > 0)
+        {
+            money.AddCryptos(amount);
+        } else if (amount < 0)
+        {
+            money.RemoveCryptos(amount);
+        }
+    }
+
+    public int GetMoney()
+    {
+        return money.GetCryptos();
+    }
+
+    public void Die()
+    {
+        combat.SetHp(combat.stats.maxHp);
+        combat.healthBar.SetHealth(combat.health.GetHp());
+        money.ResetCryptos();
     }
 }

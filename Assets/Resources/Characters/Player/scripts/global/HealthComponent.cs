@@ -4,15 +4,13 @@ public class HealthComponent : MonoBehaviour
 {
     private int curHP;
     private StatsComponent stats;
-    //public HealthBar healthBar;
+    
+    public System.Action OnDeath;
 
     public void Initialize(StatsComponent stats)
     {
         this.stats = stats;
         curHP = stats.maxHp;
-        
-        /*healthBar.SetMaxHealth(stats.maxHp);
-        healthBar.SetHealth(GetHp());*/
     }
 
     public void TakeDamage(int amount, string type)
@@ -27,7 +25,6 @@ public class HealthComponent : MonoBehaviour
         }
         
         curHP -= damage;
-        //healthBar.SetHealth(GetHp());
         Debug.Log($"{gameObject.name} recibe {damage} daño. HP: {curHP}");
 
         if (curHP <= 0)
@@ -39,7 +36,14 @@ public class HealthComponent : MonoBehaviour
     private void Die()
     {
         Debug.Log($"{gameObject.name} ha muerto.");
-        Destroy(gameObject);
+        if (gameObject.tag.Equals("Player"))
+        {
+            OnDeath?.Invoke();
+        }
+        else
+        {
+            Destroy(gameObject);
+        }
     }
     
     public void Heal(int amount)
@@ -50,5 +54,10 @@ public class HealthComponent : MonoBehaviour
     public int GetHp()
     {
         return curHP;
+    }
+
+    public void SetHp(int hp)
+    {
+        curHP = hp;
     }
 }
