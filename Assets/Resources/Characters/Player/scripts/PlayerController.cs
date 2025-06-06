@@ -82,7 +82,7 @@ public class PlayerController : MonoBehaviour
     }
     
     public void OnHurt() {
-        movementController.StopMovement();
+        //movementController.StopMovement();
         animationController.OnHurt();
     }
     

@@ -1,10 +1,13 @@
 using System;
+using System.Threading;
 using UnityEngine;
 
 public class CombatController : MonoBehaviour
 {
     public StatsComponent stats;
     public HealthComponent health;
+    
+    private float lastHurt = 0f;
 
     public HealthBar healthBar;
     
@@ -33,9 +36,19 @@ public class CombatController : MonoBehaviour
     public void ReceiveDamage(int amount, string type)
     {
         health.TakeDamage(amount, type);
-    
+
         if (CompareTag("Player"))
             healthBar.SetHealth(health.GetHp());
+    }
+
+    public void SetLastHurt(float time)
+    {
+        lastHurt = time;
+    }
+
+    public float GetLastHurt()
+    {
+        return lastHurt;
     }
 
     public void ReceiveHeal(int amount)

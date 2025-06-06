@@ -7,6 +7,7 @@ public class EnemyController : MonoBehaviour
     private EnemyMovement  movement;
     private CombatController combat;
     private EnemyAttack attack;
+    private GameObject player;
     
     private void Awake()
     {
@@ -18,22 +19,37 @@ public class EnemyController : MonoBehaviour
     private void Start()
     {
         attack.Initialize(combat);
-        movement.SetSpeed(combat.getSpd());
     }
 
 
-    public void Initialize(EnemyGenerator generator)
+    public void Initialize(GameObject player)
     {
-        this.generator = generator;
-        movement.SetPlayer(generator.GetPlayer());
+        this.player = player;
+        movement.SetPlayer(player);
+    }
+
+    public bool PlayerExists()
+    {
+        return player != null;
+    }
+
+    public void StopEnemies()
+    {
+        movement.SetSpeed(0);
+    }
+
+    public void StartEnemies()
+    {
+        movement.SetSpeed(combat.getSpd());
     }
 
     private void OnDestroy()
     {
         if (generator != null)
         {
+            //FIXEAR DINERO O ELIMINAR CUANDO HAYA DROPS
             generator.GetPlayer().GetComponent<PlayerController>().ApplyMoney(combat.stats.value);
-            generator.NotifyEnemyDeath();
+            //generator.NotifyEnemyDeath();
         }
     }
 }

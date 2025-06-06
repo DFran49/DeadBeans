@@ -24,7 +24,7 @@ public class EnemyMovement : MonoBehaviour
     void FixedUpdate()
     {
         
-        if (playerTrans == null) return;
+        if (playerTrans == null || speed == 0) return;
 
         
 

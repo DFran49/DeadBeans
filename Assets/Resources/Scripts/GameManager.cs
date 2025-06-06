@@ -4,17 +4,10 @@ using UnityEngine;
 public class GameManager : MonoBehaviour
 {
     public GameObject player;
-    private EnemyGenerator enemies;
-    
     [SerializeField] private GameObject playerPrefab;
     [SerializeField] private Vector2 spawnPosition = new Vector2(1, 1);
     
     [SerializeField] private Camera cam;
-    
-    private void Awake()
-    {
-        enemies = GetComponent<EnemyGenerator>();
-    }
     
     private void Start()
     {
@@ -28,7 +21,7 @@ public class GameManager : MonoBehaviour
         {
             player = Instantiate(playerPrefab, spawnPosition, Quaternion.identity);
             player.name = "Player";
-            enemies.AssignPlayer(player);
+            //enemies.AssignPlayer(player);
             // Conectarse al evento OnDeath del HealthComponent
             var health = player.GetComponent<HealthComponent>();
             if (health != null)
@@ -36,6 +29,7 @@ public class GameManager : MonoBehaviour
                 health.OnDeath += OnPlayerDeath;
             }
         }
+        //Borrar cuando haya game over
         else
         {
             player.transform.position = spawnPosition;
@@ -50,9 +44,9 @@ public class GameManager : MonoBehaviour
         }
     }
     
+    //Será inútil cuando haya game over
     private IEnumerator ReenableComponent(CapsuleCollider2D component, float delay)
     {
-        
         yield return new WaitForSeconds(delay);
         component.enabled = true;
         Debug.Log("Vulnerable");
@@ -63,10 +57,6 @@ public class GameManager : MonoBehaviour
         Debug.Log("Jugador muerto. Respawn en 5 segundos.");
         player.SetActive(false);
         Invoke(nameof(SpawnPlayer), 5f);
-    }
-
-    private void SetCameraFollow()
-    {
-        //Poner find by main camera
+        //Meter game over
     }
 }
