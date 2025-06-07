@@ -16,6 +16,10 @@ public class PlayerMovement : MonoBehaviour {
     PlayerInputs inputs;
     
     public Vector2 CurrentMovement => movement;
+    
+    private Vector2 knockbackVelocity = Vector2.zero;
+    private float knockbackTime = 0f;
+    private bool isKnockbackActive = false;
 
     public void setSpd(int spd)
     {
@@ -34,12 +38,22 @@ public class PlayerMovement : MonoBehaviour {
 
     private void OnEnable() {
         inputs.Enable();
+        EnableInputs();
+    }
 
+    public void EnableInputs()
+    {
         inputs.Gameplay.Movement.performed += OnMovement;
         inputs.Gameplay.Movement.canceled += OnMovement;
     }
 
     private void OnDisable() {
+        DisableInputs();
+        inputs.Disable();
+    }
+
+    public void DisableInputs()
+    {
         inputs.Gameplay.Movement.performed -= OnMovement;
         inputs.Gameplay.Movement.canceled -= OnMovement;
     }
@@ -51,8 +65,29 @@ public class PlayerMovement : MonoBehaviour {
     public void RefreshMovement() {
         movement = inputs.Gameplay.Movement.ReadValue<Vector2>();
     }
+    
+    public void ApplyKnockback(Vector2 direction, float force, float duration)
+    {
+        knockbackVelocity = direction.normalized * force;
+        knockbackTime = duration;
+        isKnockbackActive = true;
+    }
 
     private void FixedUpdate() {
+        if (isKnockbackActive)
+        {
+            rigidBody.linearVelocity = knockbackVelocity;
+            knockbackTime -= Time.fixedDeltaTime;
+        
+            if (knockbackTime <= 0f)
+            {
+                isKnockbackActive = false;
+                rigidBody.linearVelocity = Vector2.zero;
+            }
+
+            return;
+        }
+        
         if (movement != Vector2.zero) {
             rigidBody.MovePosition(rigidBody.position + movement * speed * Time.fixedDeltaTime);
         }

@@ -1,6 +1,7 @@
 using System;
 using Unity.VisualScripting;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class BossRoom : MonoBehaviour
 {
@@ -65,6 +66,7 @@ public class BossRoom : MonoBehaviour
     private void ExitDungeon(Collider2D other)
     {
         Debug.Log("Exiting dungeon");
+        SceneManager.LoadScene("City");
     }
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created

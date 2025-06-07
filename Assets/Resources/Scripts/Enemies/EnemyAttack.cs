@@ -18,22 +18,11 @@ public class EnemyAttack : MonoBehaviour
         if (parent != null && parent.CompareTag("Player"))
         {
             cPlayer = parent.GetComponent<CombatController>();
-            if (cPlayer != null && (Time.time - cPlayer.GetLastHurt()) >= 0.5f)
-                Hurt();
+            
+            //Hacerlo a playerController
+            if (cPlayer != null)
+                cPlayer.PlayerReceiveDamage(combat.getStr(), transform.position,"Physical");
         }
-    }
-
-    void Hurt()
-    {
-        if (combat == null)
-            return;
-        
-        cPlayer.GetComponent<PlayerController>().OnHurt();
-        cPlayer.ReceiveDamage(combat.getStr(),"Physical");
-        cPlayer.SetLastHurt(Time.time);
-        Time.timeScale = 0;
-        Thread.Sleep(50);
-        Time.timeScale = 1;
     }
 
     public void Initialize(CombatController combat)

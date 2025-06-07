@@ -103,6 +103,10 @@ public class Room : MonoBehaviour {
                     if (exitDirections.Contains(Directions.Up) || enterDirection == Directions.Up)
                     {
                         SetExit(door, Directions.Up);
+                        if (name.Equals("SalaSpawn"))
+                        {
+                            Debug.Log("SalaSpawn");
+                        }
                     }
                     else
                         CloseExit(door);
@@ -166,10 +170,10 @@ public class Room : MonoBehaviour {
                 var pos = other.transform.parent.position;
                 switch (dir)
                 {
-                    case Directions.Right: pos.x += 23; break;
-                    case Directions.Left: pos.x -= 23; break;
-                    case Directions.Up: pos.y += 23; break;
-                    case Directions.Down: pos.y -= 23; break;
+                    case Directions.Right: pos.x += 24; break;
+                    case Directions.Left: pos.x -= 24; break;
+                    case Directions.Up: pos.y += 24; break;
+                    case Directions.Down: pos.y -= 24; break;
                 }
                 other.transform.parent.position = pos;
             }

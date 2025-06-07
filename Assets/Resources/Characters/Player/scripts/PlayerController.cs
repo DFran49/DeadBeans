@@ -1,5 +1,9 @@
+using System;
+using TMPro;
 using UnityEngine;
 using UnityEngine.InputSystem;
+using UnityEngine.SceneManagement;
+using UnityEngine.UI;
 
 public class PlayerController : MonoBehaviour
 {
@@ -7,8 +11,13 @@ public class PlayerController : MonoBehaviour
     private AnimationCompController animationController;
     private PlayerInputs inputs;
     private CombatController combat;
-
     private CryptosComponent money;
+
+    private GameObject interactable;
+    
+    private Vector2 knockbackVelocity;
+    private float knockbackTime = 0f;
+    
     private void Awake()
     {
         combat = GetComponent<CombatController>();
@@ -36,29 +45,64 @@ public class PlayerController : MonoBehaviour
         
         if (other.CompareTag("Enemy"))
         {
-            var enemyHealth = other.GetComponent<HealthComponent>();
-            if (enemyHealth != null)
+            var enemyCombat = other.GetComponent<CombatController>();
+            if (enemyCombat != null)
             {
-                enemyHealth.TakeDamage(combat.getStr(), "Physical");
+                enemyCombat.EnemyReceiveDamage(combat.getStr(), transform.position, "Physical");
             }
         }
     }
     
     private void OnEnable() {
         inputs.Enable();
+        EnableInputs();
+    }
+
+    public void EnableInputs()
+    {
         inputs.Gameplay.Attack.performed += OnAttack;
         inputs.Gameplay.Hurt.performed += OnHurt;
-        
+        inputs.Gameplay.Interact.performed += OnInteraction;
     }
     
     private void OnDisable() {
+        DisableInputs();
+        inputs.Disable();
+    }
+
+    public void DisableInputs()
+    {
         inputs.Gameplay.Attack.performed -= OnAttack;
         inputs.Gameplay.Hurt.performed -= OnHurt;
-        inputs.Disable();
+        inputs.Gameplay.Interact.performed -= OnInteraction;
     }
     
     private void Update() {
         animationController.UpdateAnimation(movementController.CurrentMovement);
+    }
+
+    private void OnInteraction(InputAction.CallbackContext context)
+    {
+        if (interactable != null)
+        {
+            string npc = interactable.name;
+            Debug.Log(npc);
+            switch (npc)
+            {
+                case "npcSalon":
+                    Restore();
+                    Debug.Log("Salon "+interactable.name);
+                    break;
+                case "npcTienda":
+                    //tienda
+                    Debug.Log("Tienda "+interactable.name);
+                    break;
+                case "npcSalida":
+                    EnterDungeon();
+                    Debug.Log("Salida "+interactable.name);
+                    break;
+            }
+        }
     }
     
     private void OnAttack(InputAction.CallbackContext ctx) {
@@ -77,17 +121,19 @@ public class PlayerController : MonoBehaviour
     }
     
     private void OnHurt(InputAction.CallbackContext ctx) {
-        movementController.StopMovement();
-        animationController.OnHurt();
+        OnHurt();
     }
     
     public void OnHurt() {
-        //movementController.StopMovement();
+        movementController.StopMovement();
         animationController.OnHurt();
+        var origen = transform.position;
+        origen.y += 20;
+        combat.PlayerReceiveDamage(7, origen, "Physical");
     }
     
-    public void OnAttackEnd() {
-        
+    public void OnAttackEnd() 
+    {
         animationController.OnAttackEndInside();
         movementController.RefreshMovement();
     }
@@ -119,4 +165,36 @@ public class PlayerController : MonoBehaviour
         combat.healthBar.SetHealth(combat.health.GetHp());
         money.ResetCryptos();
     }
+
+    private void OnTriggerEnter2D(Collider2D other)
+    {
+        if (other.CompareTag("NPC"))
+            interactable = other.gameObject;
+    }
+
+    private void Restore()
+    {
+        combat.ReceiveHeal(100000000);
+    }
+
+    private void EnterDungeon()
+    {
+        SceneManager.LoadScene("Dungeon");
+    }
+
+    private void OnTriggerExit2D(Collider2D other)
+    {
+        if (other.CompareTag("NPC"))
+            interactable = null;
+    }
+    
+    /*void FixedUpdate()
+    {
+        if (knockbackTime > 0)
+        {
+            rb.linearVelocity = knockbackVelocity;
+            knockbackTime -= Time.fixedDeltaTime;
+            return;
+        }
+    }*/
 }

@@ -14,7 +14,12 @@ public class CryptosComponent : MonoBehaviour
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
-        ResetCryptos();
+        LoadCryptos();
+    }
+
+    void LoadCryptos()
+    {
+        //Sacar de json
     }
 
     public void AddCryptos(int amount)

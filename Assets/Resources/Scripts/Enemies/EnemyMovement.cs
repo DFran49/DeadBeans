@@ -8,6 +8,9 @@ public class EnemyMovement : MonoBehaviour
     public float stopDistance = 0.5f;
 
     private Rigidbody2D rb;
+    private Vector2 knockbackVelocity = Vector2.zero;
+    private float knockbackTime = 0f;
+    private bool isKnockbackActive = false;
 
     void Start()
     {
@@ -23,10 +26,21 @@ public class EnemyMovement : MonoBehaviour
 
     void FixedUpdate()
     {
-        
         if (playerTrans == null || speed == 0) return;
-
         
+        if (isKnockbackActive)
+        {
+            rb.linearVelocity = knockbackVelocity;
+            knockbackTime -= Time.fixedDeltaTime;
+        
+            if (knockbackTime <= 0f)
+            {
+                isKnockbackActive = false;
+                rb.linearVelocity = Vector2.zero;
+            }
+
+            return;
+        }
 
         if (!player.activeInHierarchy)
         {
@@ -43,7 +57,13 @@ public class EnemyMovement : MonoBehaviour
                 rb.MovePosition(newPosition);
             }
         }
-            
+    }
+    
+    public void ApplyKnockback(Vector2 direction, float force, float duration)
+    {
+        knockbackVelocity = direction.normalized * force;
+        knockbackTime = duration;
+        isKnockbackActive = true;
     }
 
     public void SetPlayer(GameObject player)

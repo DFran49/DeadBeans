@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using UnityEngine;
 
@@ -9,10 +10,18 @@ public class GameManager : MonoBehaviour
     
     [SerializeField] private Camera cam;
     
+    private PauseMenu pauseMenu;
+
+    private void Awake()
+    {
+        pauseMenu = GetComponent<PauseMenu>();
+    }
+
     private void Start()
     {
         SpawnPlayer();
         cam.GetComponent<CameraFollow>().target = player.transform;
+        pauseMenu.SetPlayer(player);
     }
 
     private void SpawnPlayer()
@@ -21,8 +30,6 @@ public class GameManager : MonoBehaviour
         {
             player = Instantiate(playerPrefab, spawnPosition, Quaternion.identity);
             player.name = "Player";
-            //enemies.AssignPlayer(player);
-            // Conectarse al evento OnDeath del HealthComponent
             var health = player.GetComponent<HealthComponent>();
             if (health != null)
             {

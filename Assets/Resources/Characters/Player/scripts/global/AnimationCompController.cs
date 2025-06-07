@@ -11,6 +11,7 @@ public class AnimationCompController : MonoBehaviour
     private void Awake() {
         animator = GetComponent<Animator>();
         attackHitboxController = GetComponentInChildren<AttackHitboxController>();
+        Debug.Log("Animator enabled: " + animator.enabled);
     }
     
     public void UpdateAnimation(Vector2 movement) {
@@ -66,6 +67,16 @@ public class AnimationCompController : MonoBehaviour
     {
         if (attackHitboxController != null)
             attackHitboxController.DisableHitboxes();
+    }
+
+    public void PauseAnimation()
+    {
+        animator.speed = 0f;
+    }
+
+    public void ResumeAnimation()
+    {
+        animator.speed = 1f;
     }
     
     private void LaunchAnimation() {
