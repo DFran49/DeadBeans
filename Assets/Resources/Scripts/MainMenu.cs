@@ -3,9 +3,11 @@ using UnityEngine.SceneManagement;
 
 public class MainMenu : MonoBehaviour
 {
+    public DataRequester dataRequester;
+    
     public void PlayGame()
     {
-        SceneManager.LoadScene("City");
+        dataRequester.LoadData();
     }
 
     public void QuitGame()

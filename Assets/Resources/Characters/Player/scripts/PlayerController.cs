@@ -30,6 +30,12 @@ public class PlayerController : MonoBehaviour
 
     private void Start()
     {
+        PlayerStatsLoader.CargarYAplicarStatsDesdeJson();
+        ScriptablePlayer playerData = Resources.Load<ScriptablePlayer>("Scripts/Player/Player");
+        Debug.Log("Cargado " + playerData.cryptos + " - " + playerData.health);
+        money.AddCryptos(playerData.cryptos);
+        combat.health.SetHp(playerData.health);
+        
         movementController.setSpd(combat.getSpd());
         var hitbox = GetComponentInChildren<AttackHitboxController>();
         if (hitbox != null)
@@ -41,17 +47,20 @@ public class PlayerController : MonoBehaviour
     private void OnEnable() {
         inputs.Enable();
         EnableInputs();
+        inputs.Gameplay.Interact.performed += OnInteraction;
+        SceneManager.activeSceneChanged += OnSceneChanged;
     }
 
     public void EnableInputs()
     {
         inputs.Gameplay.Attack.performed += OnAttack;
         inputs.Gameplay.Hurt.performed += OnHurt;
-        inputs.Gameplay.Interact.performed += OnInteraction;
     }
     
     private void OnDisable() {
         DisableInputs();
+        inputs.Gameplay.Interact.performed -= OnInteraction;
+        SceneManager.activeSceneChanged -= OnSceneChanged;
         inputs.Disable();
     }
 
@@ -59,7 +68,6 @@ public class PlayerController : MonoBehaviour
     {
         inputs.Gameplay.Attack.performed -= OnAttack;
         inputs.Gameplay.Hurt.performed -= OnHurt;
-        inputs.Gameplay.Interact.performed -= OnInteraction;
     }
     
     private void Update() {
@@ -79,9 +87,14 @@ public class PlayerController : MonoBehaviour
                     Debug.Log("Salon "+interactable.name);
                     break;
                 case "npcTienda":
-                    //tienda
+                    PauseMenu pause = FindObjectOfType<PauseMenu>();
+                    pause.OpenShop();
                     Debug.Log("Tienda "+interactable.name);
                     break;
+                /*case "npcCompra":
+                    //abrir tienda de compra
+                    Debug.Log("Compra "+interactable.name);
+                    break;*/
                 case "npcSalida":
                     EnterDungeon();
                     Debug.Log("Salida "+interactable.name);
@@ -98,6 +111,7 @@ public class PlayerController : MonoBehaviour
     public void CreateAtkHitbox()
     {
         animationController.CreateAttackHitbox();
+        
     }
     
     public void DisableAtkHitbox()
@@ -106,24 +120,22 @@ public class PlayerController : MonoBehaviour
     }
     
     private void OnHurt(InputAction.CallbackContext ctx) {
+        //combat.PlayerReceiveDamage(10,transform.position,"Physical");
         // Spawner un item
-        ItemSpawner.Instance.SpawnItem(2, 5, transform.position);
+        //ItemSpawner.Instance.SpawnItem(2, 5, transform.position);
 
         // Guardar inventario
-        FindObjectOfType<InventoryManager>().SaveInventoryToPlayer();
+        /*FindObjectOfType<InventoryManager>().SaveInventoryToPlayer();
         PlayerStatsLoader.GuardarStatsAJson();
 
         // Cargar inventario
-        PlayerStatsLoader.CargarYAplicarStatsDesdeJson();
+        PlayerStatsLoader.CargarYAplicarStatsDesdeJson();*/
         //OnHurt();
     }
     
     public void OnHurt() {
         movementController.StopMovement();
         animationController.OnHurt();
-        var origen = transform.position;
-        origen.y += 20;
-        combat.PlayerReceiveDamage(7, origen, "Physical");
     }
     
     public void OnAttackEnd() 
@@ -181,14 +193,32 @@ public class PlayerController : MonoBehaviour
         if (other.CompareTag("NPC"))
             interactable = null;
     }
-    
-    /*void FixedUpdate()
+
+    public void Save()
     {
-        if (knockbackTime > 0)
-        {
-            rb.linearVelocity = knockbackVelocity;
-            knockbackTime -= Time.fixedDeltaTime;
-            return;
-        }
-    }*/
+        ScriptablePlayer playerData = Resources.Load<ScriptablePlayer>("Scripts/Player/Player");
+        InventoryManager inventoryManager = FindObjectOfType<InventoryManager>();
+        playerData.cryptos = money.GetCryptos();
+        playerData.health = combat.health.GetHp();
+        Debug.Log("Guardados " + playerData.health + " - " + playerData.cryptos);
+        playerData.inventoryData = inventoryManager.GetInventoryData();
+        playerData.lastScene = SceneManager.GetActiveScene().name;
+        PlayerStatsLoader.GuardarStatsAJson();
+    }
+    
+    void OnSceneChanged(Scene prev, Scene next)
+    {
+        if (prev.name == "MainMenu")
+            Save();
+    }
+
+    void OnApplicationQuit()
+    {
+        Save();
+    }
+
+    public void OnDestroy()
+    {
+        Save();
+    }
 }

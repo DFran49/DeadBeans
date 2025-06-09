@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: "Item_12_T\xFAnica_del_Mago"
   m_EditorClassIdentifier: 
   item_id: 12
-  icono: "T\xFAnica del Mago.png"
+  icono: "T\xFAnica del Mago.asset"
   name: "T\xFAnica del Mago"
   description: "Vestimenta que aumenta la defensa m\xE1gica."
   value: 280

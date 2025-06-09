@@ -53,6 +53,8 @@ public class HealthComponent : MonoBehaviour
 
     public void SetHp(int hp)
     {
-        curHP = hp;
+        Debug.Log("dfasfdsfasd - "+Mathf.Min(hp, stats.maxHp));
+        curHP = Mathf.Min(hp, stats.maxHp);
+        Debug.Log($"[PlayerStatsLoader] Hp: {curHP}");
     }
 }

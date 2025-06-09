@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: Item_4_Armadura_de_Cuero
   m_EditorClassIdentifier: 
   item_id: 4
-  icono: Armadura de Cuero.png
+  icono: Armadura de Cuero.asset
   name: Armadura de Cuero
   description: "Protecci\xF3n ligera que no reduce la agilidad del portador."
   value: 180

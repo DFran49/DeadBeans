@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: "Item_11_Arco_\xC9lfico"
   m_EditorClassIdentifier: 
   item_id: 11
-  icono: "Arco \xC9lfico.png"
+  icono: "Arco \xC9lfico.asset"
   name: "Arco \xC9lfico"
   description: Arco ligero y preciso usado por los elfos.
   value: 380

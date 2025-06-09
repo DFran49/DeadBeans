@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: Item_14_Daga_Envenenada
   m_EditorClassIdentifier: 
   item_id: 14
-  icono: Daga Envenenada.png
+  icono: Daga Envenenada.asset
   name: Daga Envenenada
   description: "Daga r\xE1pida que aplica veneno en cada golpe."
   value: 190

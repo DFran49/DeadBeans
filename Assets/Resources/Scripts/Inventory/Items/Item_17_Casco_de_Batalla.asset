@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: Item_17_Casco_de_Batalla
   m_EditorClassIdentifier: 
   item_id: 17
-  icono: Casco de Batalla.png
+  icono: Casco de Batalla.asset
   name: Casco de Batalla
   description: "Protege la cabeza de golpes cr\xEDticos."
   value: 160

@@ -22,7 +22,7 @@ public class AttackHitboxController : MonoBehaviour
         {
             case 0:
                 Debug.Log("Abajo");
-                transform.localPosition = new Vector3(0f, -0.6f, transform.position.z);
+                transform.localPosition = new Vector3(0f, -1f, transform.position.z);
                 break;
             case 1:
                 Debug.Log("Izq");

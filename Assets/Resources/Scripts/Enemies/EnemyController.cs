@@ -154,19 +154,17 @@ public class EnemyController : MonoBehaviour
         movement.SetSpeed(combat.getSpd());
     }
 
+    public void EndHurtEnemy()
+    {
+        GetComponent<Animator>().SetFloat("State", 0);
+    }
+
     private void OnDestroy()
     {
         // Desuscribirse del evento para evitar memory leaks
         if (combat != null && combat.health != null)
         {
             combat.health.OnDeath -= HandleEnemyDeath;
-        }
-        
-        if (generator != null)
-        {
-            //FIXEAR DINERO O ELIMINAR CUANDO HAYA DROPS
-            generator.GetPlayer().GetComponent<PlayerController>().ApplyMoney(combat.stats.value);
-            //generator.NotifyEnemyDeath();
         }
     }
 }

@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: Item_13_Elixir_de_Fuerza
   m_EditorClassIdentifier: 
   item_id: 13
-  icono: Elixir de Fuerza.png
+  icono: Elixir de Fuerza.asset
   name: Elixir de Fuerza
   description: "Poci\xF3n que aumenta temporalmente la fuerza f\xEDsica."
   value: 65

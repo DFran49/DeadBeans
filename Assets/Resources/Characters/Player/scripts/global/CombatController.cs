@@ -16,7 +16,6 @@ public class CombatController : MonoBehaviour
         stats = GetComponent<StatsComponent>();
         health = GetComponent<HealthComponent>();
         
-        //rb = GetComponent<Rigidbody2D>();
         healthBar = GameObject.Find("HealthBar").GetComponent<HealthBar>();
     }
 
@@ -37,10 +36,14 @@ public class CombatController : MonoBehaviour
     public void ReceiveDamage(int amount, string type)
     {
         health.TakeDamage(amount, type);
+        Time.timeScale = 0;
+        Thread.Sleep(30);
+        Time.timeScale = 1;
     }
 
     public void EnemyReceiveDamage(int amount, Vector2 origen, string type)
     {
+        GetComponent<Animator>().SetFloat("State", 1);
         ReceiveDamage(amount, type);
         Vector2 direccion = ((Vector2)transform.position - (Vector2)origen).normalized;
         GetComponent<EnemyMovement>().ApplyKnockback(direccion, 7f, 0.2f);
@@ -50,6 +53,7 @@ public class CombatController : MonoBehaviour
     {
         if ((Time.time - GetLastHurt()) > 1f)
         {
+            GetComponent<PlayerController>().OnHurt();
             ReceiveDamage(amount, type);
             healthBar.SetHealth(health.GetHp());
             Vector2 direccion = ((Vector2)transform.position - (Vector2)origen).normalized;

@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: Item_18_Pergamino_de_Teletransporte
   m_EditorClassIdentifier: 
   item_id: 18
-  icono: Pergamino de Teletransporte.png
+  icono: Pergamino de Teletransporte.asset
   name: Pergamino de Teletransporte
   description: "Permite escapar instant\xE1neamente del combate."
   value: 80

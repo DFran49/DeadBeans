@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: Item_2_Espada_de_Hierro
   m_EditorClassIdentifier: 
   item_id: 2
-  icono: Espada de Hierro.png
+  icono: Espada de Hierro.asset
   name: Espada de Hierro
   description: "Una espada b\xE1sica forjada con hierro puro. Ideal para principiantes."
   value: 250

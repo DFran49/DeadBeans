@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: Item_16_Martillo_de_Guerra
   m_EditorClassIdentifier: 
   item_id: 16
-  icono: Martillo de Guerra.png
+  icono: Martillo de Guerra.asset
   name: Martillo de Guerra
   description: Arma pesada capaz de destruir armaduras.
   value: 520

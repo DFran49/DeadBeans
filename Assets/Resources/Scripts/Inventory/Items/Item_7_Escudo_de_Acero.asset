@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: Item_7_Escudo_de_Acero
   m_EditorClassIdentifier: 
   item_id: 7
-  icono: Escudo de Acero.png
+  icono: Escudo de Acero.asset
   name: Escudo de Acero
   description: "Escudo resistente que proporciona excelente protecci\xF3n."
   value: 320

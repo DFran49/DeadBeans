@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: "Item_8_Poci\xF3n_de_Man\xE1"
   m_EditorClassIdentifier: 
   item_id: 8
-  icono: "Poci\xF3n de Man\xE1.png"
+  icono: "Poci\xF3n de Man\xE1.asset"
   name: "Poci\xF3n de Man\xE1"
   description: "Restaura 75 puntos de man\xE1 m\xE1gico."
   value: 40

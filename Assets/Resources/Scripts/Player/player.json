@@ -1,0 +1,122 @@
+{
+    "health": 10000000,
+    "cryptos": 0,
+    "tutoCompleted": false,
+    "lastScene": "City",
+    "inventoryData": {
+        "storageSlots": [
+            {
+                "itemId": 0,
+                "quantity": 3
+            },
+            {
+                "itemId": 0,
+                "quantity": 0
+            },
+            {
+                "itemId": 0,
+                "quantity": 0
+            },
+            {
+                "itemId": 0,
+                "quantity": 0
+            },
+            {
+                "itemId": 0,
+                "quantity": 0
+            },
+            {
+                "itemId": 0,
+                "quantity": 0
+            },
+            {
+                "itemId": 0,
+                "quantity": 0
+            },
+            {
+                "itemId": 0,
+                "quantity": 0
+            },
+            {
+                "itemId": 0,
+                "quantity": 0
+            },
+            {
+                "itemId": 0,
+                "quantity": 0
+            },
+            {
+                "itemId": 0,
+                "quantity": 0
+            },
+            {
+                "itemId": 0,
+                "quantity": 0
+            },
+            {
+                "itemId": 0,
+                "quantity": 0
+            },
+            {
+                "itemId": 0,
+                "quantity": 0
+            },
+            {
+                "itemId": 0,
+                "quantity": 0
+            },
+            {
+                "itemId": 0,
+                "quantity": 0
+            },
+            {
+                "itemId": 0,
+                "quantity": 0
+            },
+            {
+                "itemId": 0,
+                "quantity": 0
+            },
+            {
+                "itemId": 0,
+                "quantity": 0
+            },
+            {
+                "itemId": 0,
+                "quantity": 0
+            },
+            {
+                "itemId": 0,
+                "quantity": 0
+            },
+            {
+                "itemId": 0,
+                "quantity": 0
+            },
+            {
+                "itemId": 0,
+                "quantity": 0
+            },
+            {
+                "itemId": 0,
+                "quantity": 0
+            },
+            {
+                "itemId": 0,
+                "quantity": 0
+            }
+        ],
+        "weaponSlot": {
+            "itemId": 0,
+            "quantity": 0
+        },
+        "armorSlot": {
+            "itemId": 0,
+            "quantity": 0
+        },
+        "consumableSlot": {
+            "itemId": 0,
+            "quantity": 0
+        }
+    }
+}

@@ -15,6 +15,7 @@ public class InventoryManager : MonoBehaviour
     public Button equipButton;
     public Button unequipButton;
     public Button deleteButton;
+    public Button sellButton;
     
     [Header("Item Info Display")]
     public TextMeshProUGUI itemNameText;
@@ -80,6 +81,12 @@ public class InventoryManager : MonoBehaviour
             unequipButton.onClick.AddListener(UnequipSelectedItem);
         if (deleteButton != null)
             deleteButton.onClick.AddListener(DeleteSelectedItem);
+        
+        // Configurar botón de venta - siempre activo pero no interactable inicialmente
+        if (sellButton != null)
+        {
+            sellButton.interactable = false;
+        }
             
         UpdateButtonVisibility();
     }
@@ -179,6 +186,10 @@ public class InventoryManager : MonoBehaviour
         if (deleteButton != null)
             deleteButton.gameObject.SetActive(hasSelection);
         
+        // Botón vender - siempre activo, pero interactable solo si hay selección
+        if (sellButton != null)
+            sellButton.interactable = hasSelection;
+        
         if (!hasSelection)
         {
             if (equipButton != null) equipButton.gameObject.SetActive(false);
@@ -205,7 +216,6 @@ public class InventoryManager : MonoBehaviour
     {
         if (selectedStorageIndex >= 0 && inventoryData.EquipItem(selectedStorageIndex))
         {
-            // ARREGLO: Guardar cambios inmediatamente
             SaveInventoryToPlayer();
             RefreshAllSlots();
             UpdatePlayerStats();
@@ -220,7 +230,6 @@ public class InventoryManager : MonoBehaviour
         {
             if (inventoryData.UnequipItem(selectedEquipmentType))
             {
-                // ARREGLO: Guardar cambios inmediatamente
                 SaveInventoryToPlayer();
                 RefreshAllSlots();
                 UpdatePlayerStats();
@@ -234,7 +243,6 @@ public class InventoryManager : MonoBehaviour
             Item itemData = GetItemDataById(selectedSlotData.itemId);
             if (itemData != null && inventoryData.UnequipItem(itemData.subtype))
             {
-                // ARREGLO: Guardar cambios inmediatamente
                 SaveInventoryToPlayer();
                 RefreshAllSlots();
                 UpdatePlayerStats();
@@ -275,6 +283,75 @@ public class InventoryManager : MonoBehaviour
         selectedSlotData = null;
         UpdateItemInfo();
         UpdateButtonVisibility();
+    }
+    
+    /// <summary>
+    /// Método público para vender el item seleccionado actualmente.
+    /// Debe ser llamado desde el evento OnClick del botón de venta en la escena.
+    /// </summary>
+    public void SellSelectedItem()
+    {
+        if (selectedSlotData == null || selectedSlotData.IsEmpty())
+        {
+            Debug.LogWarning("No hay item seleccionado para vender.");
+            return;
+        }
+        
+        // Obtener datos del item
+        Item itemData = GetItemDataById(selectedSlotData.itemId);
+        if (itemData == null)
+        {
+            Debug.LogWarning("No se pudieron obtener los datos del item seleccionado.");
+            return;
+        }
+        
+        // Calcular valor total de venta
+        int sellValue = itemData.value * selectedSlotData.quantity;
+        
+        // Buscar CryptosComponent en la escena
+        CryptosComponent cryptosComponent = FindObjectOfType<CryptosComponent>();
+        if (cryptosComponent == null)
+        {
+            Debug.LogWarning("No se encontró CryptosComponent en la escena. No se puede completar la venta.");
+            return;
+        }
+        
+        // Eliminar el item del inventario
+        if (isEquipmentSlotSelected)
+        {
+            // Eliminar del slot de equipamiento
+            switch (selectedEquipmentType)
+            {
+                case ItemSubtype.weapon:
+                    inventoryData.weaponSlot.Clear();
+                    break;
+                case ItemSubtype.armor:
+                    inventoryData.armorSlot.Clear();
+                    break;
+                case ItemSubtype.consumable:
+                    inventoryData.consumableSlot.Clear();
+                    break;
+            }
+        }
+        else if (selectedStorageIndex >= 0)
+        {
+            // Eliminar del inventario de almacenamiento
+            inventoryData.RemoveItem(selectedStorageIndex);
+        }
+        
+        // Añadir dinero
+        cryptosComponent.AddCryptos(sellValue);
+        
+        // Actualizar interfaz
+        SaveInventoryToPlayer();
+        RefreshAllSlots();
+        UpdatePlayerStats();
+        DeselectAllSlots();
+        selectedSlotData = null;
+        UpdateItemInfo();
+        UpdateButtonVisibility();
+        
+        Debug.Log($"Item vendido: {itemData.name} x{selectedSlotData.quantity} por {sellValue} cryptos");
     }
     
     public bool AddItemToInventory(int itemId, int quantity)

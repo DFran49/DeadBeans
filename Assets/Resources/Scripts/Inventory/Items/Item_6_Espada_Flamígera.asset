@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: "Item_6_Espada_Flam\xEDgera"
   m_EditorClassIdentifier: 
   item_id: 6
-  icono: "Espada Flam\xEDgera.png"
+  icono: "Espada Flam\xEDgera.asset"
   name: "Espada Flam\xEDgera"
   description: "Espada encantada que causa da\xF1o de fuego adicional."
   value: 850

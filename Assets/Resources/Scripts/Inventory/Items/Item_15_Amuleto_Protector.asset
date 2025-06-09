@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: Item_15_Amuleto_Protector
   m_EditorClassIdentifier: 
   item_id: 15
-  icono: Amuleto Protector.png
+  icono: Amuleto Protector.asset
   name: Amuleto Protector
   description: "Amuleto que reduce el da\xF1o recibido."
   value: 220

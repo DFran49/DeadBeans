@@ -1,0 +1,25 @@
+{
+  "items": [
+    {
+      "id": 1,
+      "name": "Espada de Luz",
+      "description": "Brilla intensamente con energía solar.",
+      "value": 150,
+      "subtype": "weapon",
+      "strength": 25,
+      "range": 1,
+      "attack_speed": 1.2,
+      "category": "espada"
+    },
+    {
+      "id": 2,
+      "name": "Poción de Vida",
+      "description": "Restaura 100 puntos de vida.",
+      "value": 50,
+      "subtype": "consumable",
+      "duration": 0,
+      "reusable": false,
+      "power": 100
+    }
+  ]
+}

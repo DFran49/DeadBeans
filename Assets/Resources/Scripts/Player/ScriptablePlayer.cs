@@ -5,7 +5,7 @@ public class ScriptablePlayer : ScriptableObject
 {
     [Header("Atributos")]
     //combat fields
-    [HideInInspector] public int health;
+    [HideInInspector] public int health = 0;
     [HideInInspector] public int cryptos;
     [HideInInspector] public bool tutoCompleted;
     [HideInInspector] public string lastScene;
@@ -38,5 +38,21 @@ public class ScriptablePlayer : ScriptableObject
         }
         
         Debug.Log($"Inventario {inventoryData.storageSlots[0].itemId}");
+    }
+
+    public void InicializarDatosvVacios()
+    {
+        health = 100;
+        cryptos = 0;
+        tutoCompleted = false;
+        lastScene = "City";
+        Debug.Log("Inicializados Datos");
+    }
+
+    public bool IsNew()
+    {
+        if (health == 0)
+            return true;
+        return false;
     }
 }

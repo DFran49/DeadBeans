@@ -1,21 +1,27 @@
+using System;
 using System.IO;
 using System.Threading;
 using TMPro;
 using UnityEditor;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
 public class DataRequester : MonoBehaviour
 {
+    public GameObject mainMenu;
     public GameObject loadingScreen;
     public Slider progressBar;
     public TextMeshProUGUI progressText;
 
-    public ScriptableEnemy item1;
-    public ScriptableEnemy item2;
-
-    void Start()
+    private void Awake()
     {
+        PlayerStatsLoader.CargarYAplicarStatsDesdeJson();
+    }
+
+    public void LoadData()
+    {
+        mainMenu.SetActive(false);
         loadingScreen.SetActive(true);
         progressBar.value = 0;
         progressText.text = "0%";
@@ -27,26 +33,35 @@ public class DataRequester : MonoBehaviour
                 float progress = (float)completed / total;
                 progressBar.value = progress;
                 progressText.text = Mathf.RoundToInt(progress * 100f) + "%";
+                Thread.Sleep(200);
             },
             onComplete: () =>
             {
-                Thread.Sleep(3000);
                 loadingScreen.SetActive(false);
                 Debug.Log("¡Todo cargado!");
                 //todo Faltan algunos itemss
                 ItemStatsLoader.CargarYAplicarStatsDesdeJson();
                 EnemyStatsLoader.CargarYAplicarStatsDesdeJson();
-                //todo Sacar la lista o los items del json
-                //PlayerLeaderboardStatsLoader.CargarYAplicarStatsDesdeJson();
+                progressText.text = "Lectura completada!";
+                progressText.fontSize = 72;
+                Thread.Sleep(1000);
+
                 
-                MostrarItemsDesdeRuta();
+                ScriptablePlayer player = Resources.Load<ScriptablePlayer>("Scripts/Player/Player");
+                
+                string scene = "City";
+                Debug.Log("Loading scene " + scene);
+                if (player != null)
+                    scene = player.lastScene;
+                Debug.Log(player.lastScene);
+                SceneManager.LoadScene(scene);
             }
         );
     }
     
     private const string assetsItemsPath = "Assets/Resources/Scripts/Enemies/Data/Enemies";
 
-    [MenuItem("Herramientas/Mostrar enemies")]
+    /*[MenuItem("Herramientas/Mostrar enemies")]
     public static void MostrarItemsDesdeRuta()
     {
         if (!Directory.Exists(assetsItemsPath))
@@ -65,6 +80,6 @@ public class DataRequester : MonoBehaviour
                 Debug.Log($"ID: {item.enemy_id} | Descripción: {item.description} | Drops: {item.dropTables.drops.Count} | Ruta: {filePath}");
             }
         }
-    }
+    }*/
 }
 

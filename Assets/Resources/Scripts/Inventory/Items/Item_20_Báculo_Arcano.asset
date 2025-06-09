@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: "Item_20_B\xE1culo_Arcano"
   m_EditorClassIdentifier: 
   item_id: 20
-  icono: "B\xE1culo Arcano.png"
+  icono: "B\xE1culo Arcano.asset"
   name: "B\xE1culo Arcano"
   description: "B\xE1culo que amplifica el poder de los hechizos."
   value: 720

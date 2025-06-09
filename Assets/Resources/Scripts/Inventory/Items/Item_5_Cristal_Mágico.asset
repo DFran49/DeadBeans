@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: "Item_5_Cristal_M\xE1gico"
   m_EditorClassIdentifier: 
   item_id: 5
-  icono: "Cristal M\xE1gico.png"
+  icono: "Cristal M\xE1gico.asset"
   name: "Cristal M\xE1gico"
   description: "Un cristal imbuido con energ\xEDa arcana. \xDAtil para encantamientos."
   value: 150

@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: Item_9_Botas_de_Velocidad
   m_EditorClassIdentifier: 
   item_id: 9
-  icono: Botas de Velocidad.png
+  icono: Botas de Velocidad.asset
   name: Botas de Velocidad
   description: Aumentan significativamente la velocidad de movimiento.
   value: 450

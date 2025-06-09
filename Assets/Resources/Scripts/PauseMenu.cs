@@ -6,9 +6,11 @@ public class PauseMenu : MonoBehaviour
 {
     public static bool juegoPausado = false;
     public static bool inventarioAbierto = false;
+    public static bool shopOpen = false; 
     private PlayerInputs inputs;
     
     public GameObject pauseMenuUI;
+    public GameObject sellButton;
 
     private GameObject player;
 
@@ -38,7 +40,7 @@ public class PauseMenu : MonoBehaviour
         
         pauseMenuUI.SetActive(false);
         juegoPausado = false;
-        
+        shopOpen = false;
         inventarioAbierto = false;
         InventoryManager inventoryManager = FindObjectOfType<InventoryManager>();
         inventoryManager.HideInventory();
@@ -54,19 +56,24 @@ public class PauseMenu : MonoBehaviour
 
     public void AbrirMenuPrincipal()
     {
+        player.GetComponent<PlayerController>().Save();
         Time.timeScale = 1;
+        juegoPausado = false;
+        shopOpen = false;
+        inventarioAbierto = false;
         SceneManager.LoadScene("MainMenu");
     }
 
     public void CerrarJuego()
     {
+        player.GetComponent<PlayerController>().Save();
         Debug.Log("Cerrando juego...");
         Application.Quit();
     }
     
     public void onMenuKeyPressed(InputAction.CallbackContext context)
     {
-        if (inventarioAbierto)
+        if (inventarioAbierto || shopOpen)
             return;
         
         if (juegoPausado)
@@ -83,7 +90,7 @@ public class PauseMenu : MonoBehaviour
 
     public void onInventoryKeyPressed(InputAction.CallbackContext context)
     {
-        if (juegoPausado)
+        if (juegoPausado || shopOpen)
             return;
         
         InventoryManager inventoryManager = FindObjectOfType<InventoryManager>();
@@ -96,6 +103,27 @@ public class PauseMenu : MonoBehaviour
         {
             Pausar();
             inventarioAbierto = true;
+        }
+    }
+
+    public void OpenShop()
+    {
+        if (juegoPausado || inventarioAbierto)
+            return;
+
+        InventoryManager inventoryManager = FindObjectOfType<InventoryManager>();
+        inventoryManager.ToggleInventory();
+        
+        if (shopOpen)
+        {
+            Reanudar();
+            sellButton.active = false;
+        }
+        else
+        {
+            Pausar();
+            sellButton.active = true;
+            shopOpen = true;
         }
     }
     

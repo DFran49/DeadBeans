@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: "Item_3_Poci\xF3n_de_Salud_Menor"
   m_EditorClassIdentifier: 
   item_id: 3
-  icono: "Poci\xF3n de Salud Menor.png"
+  icono: "Poci\xF3n de Salud Menor.asset"
   name: "Poci\xF3n de Salud Menor"
   description: "Restaura 50 puntos de salud instant\xE1neamente."
   value: 25

@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: Item_10_Gema_de_Poder
   m_EditorClassIdentifier: 
   item_id: 10
-  icono: Gema de Poder.png
+  icono: Gema de Poder.asset
   name: Gema de Poder
   description: "Gema rara que aumenta el poder m\xE1gico del portador."
   value: 600

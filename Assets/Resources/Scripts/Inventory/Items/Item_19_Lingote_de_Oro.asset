@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: Item_19_Lingote_de_Oro
   m_EditorClassIdentifier: 
   item_id: 19
-  icono: Lingote de Oro.png
+  icono: Lingote de Oro.asset
   name: Lingote de Oro
   description: Oro puro usado para crear objetos valiosos.
   value: 300
