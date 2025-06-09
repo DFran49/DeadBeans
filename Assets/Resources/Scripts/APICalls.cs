@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.IO;
+using System.Threading;
 using UnityEngine;
 using UnityEngine.Networking;
 
@@ -12,11 +13,6 @@ public static class ApiCalls
         { "https://apis.dfran49.com/API/crud/items/leer.php", "items.json" },
         { "https://apis.dfran49.com/API/crud/players/leer.php", "player_leaderboard.json" },
         { "https://apis.dfran49.com/API/crud/enemies/leer.php", "enemies.json" },
-        //todo Juntar todos los items en un solo endpoint
-        { "https://apis.dfran49.com/API/crud/weapons/leer.php", "enemies.json" },
-        { "https://apis.dfran49.com/API/crud/armors /leer.php", "enemies.json" },
-        { "https://apis.dfran49.com/API/crud/consumables/leer.php", "enemies.json" },
-        { "https://apis.dfran49.com/API/crud/materials/leer.php", "enemies.json" },
         //todo Todo lo de sells
         { "https://apis.dfran49.com/API/crud/sells/leer.php", "sells.json" }
     };
@@ -38,7 +34,8 @@ public static class ApiCalls
 
             onProgress?.Invoke(completed, total);
         }
-
+        
+        Thread.Sleep(1000);
         onComplete?.Invoke();
     }
 

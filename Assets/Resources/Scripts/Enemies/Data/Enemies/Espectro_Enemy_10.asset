@@ -1,0 +1,42 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3621f8828bf76a938b55f1acf2ba9386, type: 3}
+  m_Name: Espectro_Enemy_10
+  m_EditorClassIdentifier: 
+  enemy_id: 10
+  sprite: Espectro.png
+  animator: Espectro.controller
+  name: Espectro
+  description: "Esp\xEDritu vengativo inmune a ataques f\xEDsicos normales."
+  health: 90
+  strength: 35
+  speed: 3.2
+  attack_speed: 2.9
+  def: 5
+  magic_def: 28
+  dropTables:
+    drops:
+    - item_id: 5
+      item_name: "Cristal M\xE1gico"
+      max_quantity: 2
+      min_quantity: 1
+      drop_rate: 45
+    - item_id: 15
+      item_name: Amuleto Protector
+      max_quantity: 1
+      min_quantity: 1
+      drop_rate: 25
+    - item_id: 18
+      item_name: Pergamino de Teletransporte
+      max_quantity: 1
+      min_quantity: 1
+      drop_rate: 30

@@ -1,0 +1,32 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d4390f3c649473b338ba701be6a20bd0, type: 3}
+  m_Name: Item_15_Amuleto_Protector
+  m_EditorClassIdentifier: 
+  item_id: 15
+  icono: Amuleto Protector.png
+  name: Amuleto Protector
+  description: "Amuleto que reduce el da\xF1o recibido."
+  value: 220
+  subtype: 1
+  type: 
+  strength: 0
+  range: 0
+  attack_speed: 0
+  category: 
+  def: 15
+  magic_def: 15
+  agility: 3
+  speed: 0
+  duration: 0
+  reusable: 0
+  power: 0

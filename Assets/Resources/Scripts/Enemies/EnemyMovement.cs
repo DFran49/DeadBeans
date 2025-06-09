@@ -72,7 +72,7 @@ public class EnemyMovement : MonoBehaviour
         playerTrans = player.transform;
     }
 
-    public void SetSpeed(int speed)
+    public void SetSpeed(float speed)
     {
         this.speed = speed;
     }

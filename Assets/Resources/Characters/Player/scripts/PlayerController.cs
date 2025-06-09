@@ -26,30 +26,15 @@ public class PlayerController : MonoBehaviour
         animationController = GetComponent<AnimationCompController>();
         money = GetComponent<CryptosComponent>();
         inputs = new PlayerInputs();
-
-        var hitbox = GetComponentInChildren<AttackHitboxController>();
-        if (hitbox != null)
-        {
-            hitbox.OnHitboxTriggerEnter += HandleHitboxTrigger;
-        }
     }
 
     private void Start()
     {
         movementController.setSpd(combat.getSpd());
-    }
-    
-    private void HandleHitboxTrigger(Collider2D other)
-    {
-        Debug.Log("El jugador golpeó a: " + other.name + " e hizo " + combat.getStr() + " puntos de daño");
-        
-        if (other.CompareTag("Enemy"))
+        var hitbox = GetComponentInChildren<AttackHitboxController>();
+        if (hitbox != null)
         {
-            var enemyCombat = other.GetComponent<CombatController>();
-            if (enemyCombat != null)
-            {
-                enemyCombat.EnemyReceiveDamage(combat.getStr(), transform.position, "Physical");
-            }
+            hitbox.SetStats(combat.getStr());
         }
     }
     
@@ -121,7 +106,16 @@ public class PlayerController : MonoBehaviour
     }
     
     private void OnHurt(InputAction.CallbackContext ctx) {
-        OnHurt();
+        // Spawner un item
+        ItemSpawner.Instance.SpawnItem(2, 5, transform.position);
+
+        // Guardar inventario
+        FindObjectOfType<InventoryManager>().SaveInventoryToPlayer();
+        PlayerStatsLoader.GuardarStatsAJson();
+
+        // Cargar inventario
+        PlayerStatsLoader.CargarYAplicarStatsDesdeJson();
+        //OnHurt();
     }
     
     public void OnHurt() {

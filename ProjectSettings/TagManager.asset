@@ -6,6 +6,7 @@ TagManager:
   tags:
   - Enemy
   - NPC
+  - DroppedItem
   layers:
   - Default
   - TransparentFX
@@ -16,8 +17,8 @@ TagManager:
   - Player
   - Enemies
   - Floor
-  - 
-  - 
+  - Item
+  - NPC
   - 
   - 
   - 

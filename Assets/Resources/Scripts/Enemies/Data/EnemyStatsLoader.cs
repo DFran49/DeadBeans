@@ -1,17 +1,21 @@
 using System.Collections.Generic;
 using System.IO;
 using UnityEngine;
+#if UNITY_EDITOR
+using UnityEditor;
+#endif
 
-public class EnemyStatsLoader
+public static class EnemyStatsLoader
 {
     private readonly static string jsonPath = Application.persistentDataPath + "/enemies.json";
-    private const string resourcesItemsPath = "Scripts/Inventory/Items";
+    private const string resourcesEnemiesPath = "Scripts/Enemies/Data/Enemies";
+    private const string assetsEnemiesPath = "Assets/Resources/Scripts/Enemies/Data/Enemies"; // Ruta completa en Assets
 
     public static void CargarYAplicarStatsDesdeJson()
     {
         if (!File.Exists(jsonPath))
         {
-            Debug.LogError($"[ItemStatsLoader] No se encontró el archivo JSON en {jsonPath}");
+            Debug.LogError($"[EnemyStatsLoader] No se encontró el archivo JSON en {jsonPath}");
             return;
         }
 
@@ -30,34 +34,98 @@ public class EnemyStatsLoader
 
         if (enemiesList == null || enemiesList.enemies == null)
         {
-            Debug.LogError("[ItemStatsLoader] Lista de items vacía o mal formateada.");
+            Debug.LogError("[EnemyStatsLoader] Lista de enemigos vacía o mal formateada.");
             return;
         }
 
-        // Diccionario int->ItemStats
-        Dictionary<int, EnemyStats> enemiesDict = new Dictionary<int, EnemyStats>();
+#if UNITY_EDITOR
+        // Crear directorio si no existe
+        if (!Directory.Exists(assetsEnemiesPath))
+        {
+            Directory.CreateDirectory(assetsEnemiesPath);
+            AssetDatabase.Refresh();
+        }
+
+        LimpiarEnemigosExistentes();
+
+        // Crear ScriptableObjects desde el JSON
         foreach (var stat in enemiesList.enemies)
         {
-            Debug.Log($"ItemStats id leído: '{stat.enemy_id}'");
-            if (stat.enemy_id != 0)
-                enemiesDict[stat.enemy_id] = stat;
-        }
+            if (stat.enemy_id == 0) continue;
 
-        ScriptableEnemy[] items = Resources.LoadAll<ScriptableEnemy>(resourcesItemsPath);
-        foreach (var item in items)
-        {
-            if (item.enemy_id == 0) return;
-
-            if (enemiesDict.TryGetValue(item.enemy_id, out var stat))
-            {
-                Debug.Log($"Cargando item {stat.enemy_id}");
-                item.AplicarDatosDesdeJson(stat);
-                Debug.Log($"[ItemStatsLoader] Aplicados datos a '{item.enemy_id}'");
-            }
-            else
-            {
-                Debug.LogWarning($"[EnemyStatsLoader] No se encontraron datos JSON para el item '{item.enemy_id}'");
-            }
+            Debug.Log($"Creando ScriptableObject para enemigo {stat.enemy_id}");
+            
+            // Crear nuevo ScriptableObject
+            ScriptableEnemy nuevoEnemigo = ScriptableObject.CreateInstance<ScriptableEnemy>();
+            
+            // Asignar el ID primero
+            nuevoEnemigo.enemy_id = stat.enemy_id;
+            
+            // Aplicar todos los datos del JSON
+            nuevoEnemigo.AplicarDatosDesdeJson(stat);
+            
+            // Generar nombre de archivo que incluya el nombre del enemigo para facilitar la búsqueda
+            string enemyName = SanitizeFileName(stat.name);
+            string fileName = $"{enemyName}_Enemy_{stat.enemy_id}.asset";
+            string fullPath = Path.Combine(assetsEnemiesPath, fileName);
+            
+            // Crear el asset
+            AssetDatabase.CreateAsset(nuevoEnemigo, fullPath);
+            
+            Debug.Log($"[EnemyStatsLoader] Creado ScriptableObject '{fileName}' para enemigo {stat.name} (ID {stat.enemy_id})");
         }
+        
+        // Guardar y refrescar la base de datos de assets
+        AssetDatabase.SaveAssets();
+        AssetDatabase.Refresh();
+        
+        Debug.Log($"[EnemyStatsLoader] Proceso completado. Creados {enemiesList.enemies.Count} ScriptableObjects de enemigos.");
+#else
+        Debug.LogWarning("[EnemyStatsLoader] La creación de ScriptableObjects solo funciona en el Editor de Unity.");
+#endif
     }
+
+    #if UNITY_EDITOR
+    // Método opcional para limpiar enemigos existentes
+    private static void LimpiarEnemigosExistentes()
+    {
+        if (!Directory.Exists(assetsEnemiesPath)) return;
+
+        string[] existingAssets = Directory.GetFiles(assetsEnemiesPath, "*.asset");
+        foreach (string assetPath in existingAssets)
+        {
+            // Convertir ruta del sistema a ruta de Unity
+            string unityPath = assetPath.Replace('\\', '/');
+            if (unityPath.StartsWith(Application.dataPath))
+            {
+                unityPath = "Assets" + unityPath.Substring(Application.dataPath.Length);
+            }
+            
+            AssetDatabase.DeleteAsset(unityPath);
+        }
+        
+        Debug.Log("[EnemyStatsLoader] Enemigos existentes eliminados.");
+    }
+    
+    // Método para sanitizar nombres de archivo
+    private static string SanitizeFileName(string fileName)
+    {
+        if (string.IsNullOrEmpty(fileName)) return "Unknown";
+        
+        // Caracteres no válidos para nombres de archivo
+        char[] invalidChars = Path.GetInvalidFileNameChars();
+        string sanitized = fileName;
+        
+        foreach (char c in invalidChars)
+        {
+            sanitized = sanitized.Replace(c, '_');
+        }
+        
+        // Limitar longitud y quitar espacios
+        sanitized = sanitized.Trim().Replace(' ', '_');
+        if (sanitized.Length > 50) sanitized = sanitized.Substring(0, 50);
+        
+        return sanitized;
+    }
+    #endif
 }

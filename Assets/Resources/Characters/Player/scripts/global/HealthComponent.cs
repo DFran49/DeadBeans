@@ -25,8 +25,6 @@ public class HealthComponent : MonoBehaviour
         }
         
         curHP -= damage;
-        Debug.Log($"{gameObject.name} recibe {damage} daño. HP: {curHP}");
-
         if (curHP <= 0)
         {
             Die();
@@ -35,15 +33,12 @@ public class HealthComponent : MonoBehaviour
 
     private void Die()
     {
-        Debug.Log($"{gameObject.name} ha muerto.");
+        OnDeath?.Invoke();
+            
         if (gameObject.tag.Equals("Player"))
-        {
-            OnDeath?.Invoke();
-        }
-        else
-        {
-            Destroy(gameObject);
-        }
+            return;
+        
+        Destroy(gameObject);
     }
     
     public void Heal(int amount)

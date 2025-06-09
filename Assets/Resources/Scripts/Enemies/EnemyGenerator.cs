@@ -21,11 +21,6 @@ public class EnemyGenerator : MonoBehaviour
     
     private GameObject player;
 
-    private void Awake()
-    {
-        
-    }
-
     private void Start()
     {
         for (int i = 0; i < currentEnemies.Length; i++)

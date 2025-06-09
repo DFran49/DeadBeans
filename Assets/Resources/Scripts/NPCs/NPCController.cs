@@ -12,8 +12,9 @@ public class NPCController : MonoBehaviour
     {
         if (collision.transform.name.Equals("Interaction_Hitbox"))
         {
+            Debug.Log("Entra");
             interactionTag.SetActive(true);
-            actionText.text = "Presiona la tecla E para " + interactionText.text;
+            actionText.text = "Presiona la tecla F para " + interactionText.text;
         }
     }
 
@@ -21,10 +22,5 @@ public class NPCController : MonoBehaviour
     {
         if (collision.transform.name.Equals("Interaction_Hitbox"))
             interactionTag.SetActive(false);
-    }
-
-    private void Update()
-    {
-        
     }
 }

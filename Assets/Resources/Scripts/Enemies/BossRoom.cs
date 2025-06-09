@@ -57,7 +57,7 @@ public class BossRoom : MonoBehaviour
             if (other.transform.parent.CompareTag("Player"))
             {
                 var pos = other.transform.parent.position;
-                pos.y -= 19;
+                pos.y -= 20;
                 other.transform.parent.position = pos;
             }
         }

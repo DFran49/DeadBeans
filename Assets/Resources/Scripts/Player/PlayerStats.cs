@@ -8,5 +8,6 @@ public class PlayerStats
     public bool tutoCompleted;
     public string lastScene;
 
-    //Campo para el inventario
+    // Campo para el inventario
+    public InventoryData inventoryData;
 }

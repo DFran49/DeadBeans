@@ -52,7 +52,6 @@ public class CombatController : MonoBehaviour
         {
             ReceiveDamage(amount, type);
             healthBar.SetHealth(health.GetHp());
-            Debug.Log("Daño con espera " + (Time.time - GetLastHurt()));
             Vector2 direccion = ((Vector2)transform.position - (Vector2)origen).normalized;
             GetComponent<PlayerMovement>().ApplyKnockback(direccion, 7f, 0.2f);
             SetLastHurt(Time.time);
@@ -86,10 +85,8 @@ public class CombatController : MonoBehaviour
         return stats.str;
     }
     
-    public int getSpd()
+    public float getSpd()
     {
         return stats.spd;
     }
-
-    
 }

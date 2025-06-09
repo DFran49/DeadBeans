@@ -1,0 +1,42 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3621f8828bf76a938b55f1acf2ba9386, type: 3}
+  m_Name: Lobo_Gigante_Enemy_5
+  m_EditorClassIdentifier: 
+  enemy_id: 5
+  sprite: Lobo Gigante.png
+  animator: Lobo Gigante.controller
+  name: Lobo Gigante
+  description: Bestia feroz con colmillos afilados y gran velocidad.
+  health: 180
+  strength: 35
+  speed: 4.2
+  attack_speed: 3.5
+  def: 12
+  magic_def: 8
+  dropTables:
+    drops:
+    - item_id: 1
+      item_name: Acero
+      max_quantity: 1
+      min_quantity: 1
+      drop_rate: 30
+    - item_id: 4
+      item_name: Armadura de Cuero
+      max_quantity: 1
+      min_quantity: 1
+      drop_rate: 25
+    - item_id: 13
+      item_name: Elixir de Fuerza
+      max_quantity: 1
+      min_quantity: 1
+      drop_rate: 40

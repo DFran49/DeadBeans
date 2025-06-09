@@ -30,20 +30,20 @@ public class PlayerStatsLoader
 
         if (stats == null)
         {
-            Debug.LogError("[PlayerStatsLoader] Lista de items vacía o mal formateada.");
+            Debug.LogError("[PlayerStatsLoader] Stats de jugador vacíos o mal formateados.");
             return;
         }
 
         ScriptablePlayer item = Resources.Load<ScriptablePlayer>(resourcesItemsPath);
         if (item == null)
         {
-            Debug.LogError($"[PlayerStatsLoader] No se encontró el ScriptableEnemy en '{resourcesItemsPath}'");
+            Debug.LogError($"[PlayerStatsLoader] No se encontró el ScriptablePlayer en '{resourcesItemsPath}'");
             return;
         }
         
-        Debug.Log($"Cargando item player");
+        Debug.Log($"Cargando datos del jugador");
         item.AplicarDatosDesdeJson(stats);
-        Debug.Log($"[PlayerStatsLoader] Aplicados datos a player");
+        Debug.Log($"[PlayerStatsLoader] Aplicados datos a jugador");
     }
     
     public static void GuardarStatsAJson()
@@ -60,8 +60,9 @@ public class PlayerStatsLoader
             health = item.health,
             cryptos = item.cryptos,
             tutoCompleted = item.tutoCompleted,
-            lastScene = item.lastScene
+            lastScene = item.lastScene,
             // Guardar inventario
+            inventoryData = item.inventoryData
         };
 
         string jsonText = JsonUtility.ToJson(stats, true);

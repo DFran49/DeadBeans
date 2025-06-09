@@ -5,6 +5,7 @@ using UnityEngine.SceneManagement;
 public class PauseMenu : MonoBehaviour
 {
     public static bool juegoPausado = false;
+    public static bool inventarioAbierto = false;
     private PlayerInputs inputs;
     
     public GameObject pauseMenuUI;
@@ -19,21 +20,28 @@ public class PauseMenu : MonoBehaviour
     private void OnEnable() {
         inputs.Enable();
         inputs.Gameplay.Pause.performed += onMenuKeyPressed;
+        inputs.Gameplay.Inventory.performed += onInventoryKeyPressed;
     }
     
     private void OnDisable() {
         inputs.Gameplay.Pause.performed -= onMenuKeyPressed;
+        inputs.Gameplay.Inventory.performed -= onInventoryKeyPressed;
         inputs.Disable();
     }
 
     public void Reanudar()
     {
-        pauseMenuUI.SetActive(false);
         Time.timeScale = 1;
-        juegoPausado = false;
         player.GetComponent<PlayerController>().EnableInputs();
         player.GetComponent<PlayerMovement>().EnableInputs();
         player.GetComponent<AnimationCompController>().ResumeAnimation();
+        
+        pauseMenuUI.SetActive(false);
+        juegoPausado = false;
+        
+        inventarioAbierto = false;
+        InventoryManager inventoryManager = FindObjectOfType<InventoryManager>();
+        inventoryManager.HideInventory();
     }
 
     public void Pausar()
@@ -41,9 +49,7 @@ public class PauseMenu : MonoBehaviour
         player.GetComponent<PlayerController>().DisableInputs();
         player.GetComponent<PlayerMovement>().DisableInputs();
         player.GetComponent<AnimationCompController>().PauseAnimation();
-        pauseMenuUI.SetActive(true);
         Time.timeScale = 0;
-        juegoPausado = true;
     }
 
     public void AbrirMenuPrincipal()
@@ -60,6 +66,9 @@ public class PauseMenu : MonoBehaviour
     
     public void onMenuKeyPressed(InputAction.CallbackContext context)
     {
+        if (inventarioAbierto)
+            return;
+        
         if (juegoPausado)
         {
             Reanudar();
@@ -67,9 +76,29 @@ public class PauseMenu : MonoBehaviour
         else
         {
             Pausar();
+            juegoPausado = true;
+            pauseMenuUI.SetActive(true);
         }
     }
 
+    public void onInventoryKeyPressed(InputAction.CallbackContext context)
+    {
+        if (juegoPausado)
+            return;
+        
+        InventoryManager inventoryManager = FindObjectOfType<InventoryManager>();
+        inventoryManager.ToggleInventory();
+        if (inventarioAbierto)
+        {
+            Reanudar();
+        } 
+        else
+        {
+            Pausar();
+            inventarioAbierto = true;
+        }
+    }
+    
     public void SetPlayer(GameObject player)
     {
         this.player = player;

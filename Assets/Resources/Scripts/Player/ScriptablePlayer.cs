@@ -9,7 +9,9 @@ public class ScriptablePlayer : ScriptableObject
     [HideInInspector] public int cryptos;
     [HideInInspector] public bool tutoCompleted;
     [HideInInspector] public string lastScene;
-    //Meeter inventario
+    
+    [Header("Inventario")]
+    [HideInInspector] public InventoryData inventoryData;
     
     public void AplicarDatosDesdeJson(PlayerStats stats)
     {
@@ -23,6 +25,18 @@ public class ScriptablePlayer : ScriptableObject
         cryptos = stats.cryptos;
         tutoCompleted = stats.tutoCompleted;
         lastScene = stats.lastScene;
-        //Cargar inventario
+        
+        // Cargar inventario
+        if (stats.inventoryData != null)
+        {
+            inventoryData = stats.inventoryData;
+        }
+        else
+        {
+            // Inicializar inventario vacío si no existe
+            inventoryData = new InventoryData();
+        }
+        
+        Debug.Log($"Inventario {inventoryData.storageSlots[0].itemId}");
     }
 }

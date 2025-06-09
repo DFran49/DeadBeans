@@ -4,13 +4,31 @@ using UnityEngine;
 public class ItemStats
 {
     //supertype fields
-    public int id;
+    public int item_id;
     public string name;
     public string description;
     public int value;
-    public ItemSubtype subtype;
+    public string item_type;
     
-    //material fields "weapon", "armor", "material", "consumable"
+    // Propiedad para convertir string a enum
+    public ItemSubtype subtype
+    {
+        get
+        {
+            switch(item_type)
+            {
+                case "weapon": return ItemSubtype.weapon;
+                case "armor": return ItemSubtype.armor;
+                case "material": return ItemSubtype.material;
+                case "consumable": return ItemSubtype.consumable;
+                default: 
+                    Debug.LogWarning($"Tipo de item desconocido: {item_type}");
+                    return ItemSubtype.material;
+            }
+        }
+    }
+    
+    //material fields
     public string type;
     
     //weapon fields

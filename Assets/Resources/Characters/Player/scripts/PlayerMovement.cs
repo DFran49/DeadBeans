@@ -21,7 +21,7 @@ public class PlayerMovement : MonoBehaviour {
     private float knockbackTime = 0f;
     private bool isKnockbackActive = false;
 
-    public void setSpd(int spd)
+    public void setSpd(float spd)
     {
         speed = spd;
     }

@@ -1,4 +1,4 @@
-using UnityEngine;
+using System.Collections.Generic;
 
 [System.Serializable]
 public class EnemyStats
@@ -11,11 +11,19 @@ public class EnemyStats
     //combat fields
     public int health;
     public int strength;
-    public int speed;
+    public float speed;  // Cambiado a float para coincidir con el JSON
     public float attack_speed;
     public int def;
     public int magic_def;
     
-    //DropTables
-    public DropTableList dropTables;
+    // DropTables - Cambiado a lista directa para coincidir con el JSON
+    public List<DropTable> drops;
+    
+    // Método para convertir a DropTableList si es necesario
+    public DropTableList GetDropTableList()
+    {
+        DropTableList dropTableList = new DropTableList();
+        dropTableList.drops = drops ?? new List<DropTable>();
+        return dropTableList;
+    }
 }

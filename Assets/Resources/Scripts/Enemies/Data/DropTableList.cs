@@ -4,5 +4,5 @@ using UnityEngine;
 [System.Serializable]
 public class DropTableList
 {
-    public List<DropTable> dropTables;
+    public List<DropTable> drops;
 }

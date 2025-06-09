@@ -4,8 +4,8 @@ using UnityEngine;
 public class Item : ScriptableObject
 {
     [Header("Identificación")]
-    public int id;           // Clave del JSON, debe coincidir exactamente
-    public Sprite icono;
+    public int item_id;           // Clave del JSON, debe coincidir exactamente
+    public string icono;
 
     [Header("Atributos comunes")]
     [HideInInspector] public string name;
@@ -35,9 +35,9 @@ public class Item : ScriptableObject
     
     public void AplicarDatosDesdeJson(ItemStats stats)
     {
-        if (stats == null /*|| stats.name != this.name*/)
+        if (stats == null)
         {
-            Debug.LogWarning($"ItemStats no válido o nombre no coincide con el ScriptableObject: {this.name}");
+            Debug.LogWarning($"ItemStats no válido para ScriptableObject: {this.name}");
             return;
         }
 
@@ -46,13 +46,17 @@ public class Item : ScriptableObject
         description = stats.description;
         value = stats.value;
         subtype = stats.subtype;
+        icono = name + ".asset";
+
+        // Limpiar valores por defecto antes de asignar
+        LimpiarValoresPorDefecto();
 
         // Por subtipo
         switch (stats.subtype)
         {
             case ItemSubtype.material:
                 type = stats.type;
-                Debug.Log("material");
+                Debug.Log($"Aplicando datos de material para item {stats.item_id}");
                 break;
 
             case ItemSubtype.weapon:
@@ -60,7 +64,7 @@ public class Item : ScriptableObject
                 range = stats.range;
                 attack_speed = stats.attack_speed;
                 category = stats.category;
-                Debug.Log("Weapon");
+                Debug.Log($"Aplicando datos de arma para item {stats.item_id}");
                 break;
 
             case ItemSubtype.armor:
@@ -68,15 +72,39 @@ public class Item : ScriptableObject
                 magic_def = stats.magic_def;
                 agility = stats.agility;
                 speed = stats.speed;
-                Debug.Log("Armor");
+                Debug.Log($"Aplicando datos de armadura para item {stats.item_id}");
                 break;
 
             case ItemSubtype.consumable:
                 duration = stats.duration;
                 reusable = stats.reusable;
                 power = stats.power;
-                Debug.Log("Consumible");
+                Debug.Log($"Aplicando datos de consumible para item {stats.item_id}");
                 break;
         }
+    }
+
+    // Método para limpiar valores que no corresponden al subtipo actual
+    private void LimpiarValoresPorDefecto()
+    {
+        // Material
+        type = "";
+        
+        // Arma
+        strength = 0;
+        range = 0;
+        attack_speed = 0f;
+        category = "";
+        
+        // Armadura
+        def = 0;
+        magic_def = 0;
+        agility = 0;
+        speed = 0;
+        
+        // Consumible
+        duration = 0;
+        reusable = false;
+        power = 0;
     }
 }

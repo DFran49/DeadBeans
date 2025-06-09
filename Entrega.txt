@@ -1,0 +1,4 @@
+El enlace al repositorio de github es:
+https://github.com/DFran49/DeadBeans.git
+
+La documentación se encuentra en la carpetaDOCUMENTS, es el único pdf que se encuentra ahí.
